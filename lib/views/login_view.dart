@@ -30,7 +30,7 @@ class _LoginViewState extends State<LoginView> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            CustomImage(image: 'assets/loginflower.jpg'),
+            CustomImage(image:'assets/LOGIN.jpg'),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Form(

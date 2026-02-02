@@ -27,7 +27,7 @@ class _RegisterViewState extends State<RegisterView> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            CustomImage(image: 'assets/registerflower.jpg'),
+            CustomImage(image:'assets/REGISTER.jpg'),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Form(
