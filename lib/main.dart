@@ -1,3 +1,4 @@
+import 'package:flower_app/components/main_layout.dart';
 import 'package:flower_app/costants.dart';
 import 'package:flower_app/cubits/addToCard/add_to_card_cubit.dart';
 import 'package:flower_app/views/home_view.dart';
@@ -31,7 +32,7 @@ class AuthCheckLogin extends StatelessWidget {
 
         if (snapshot.hasData) {
           // اليوزر مسجل دخول قبل كده
-          return HomeView();
+          return MainLayout();
         } else {
           // اليوزر مش مسجل دخول قبل كده ع الجهاز ده
           return LoginView();

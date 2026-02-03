@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flower_app/components/create_login_reset_acount.dart';
 import 'package:flower_app/components/custom_buttom.dart';
@@ -5,7 +6,6 @@ import 'package:flower_app/components/custom_image.dart';
 import 'package:flower_app/components/custom_text_field.dart';
 import 'package:flower_app/components/snakbar.dart';
 import 'package:flower_app/costants.dart';
-import 'package:flower_app/views/home_view.dart';
 import 'package:flower_app/views/register_view.dart';
 import 'package:flower_app/views/reset_password_view.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +21,7 @@ bool ishidden = true;
 GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 final TextEditingController emailController = TextEditingController();
 final TextEditingController passwordController = TextEditingController();
+bool isloading = false;
 
 class _LoginViewState extends State<LoginView> {
   @override
@@ -30,7 +31,7 @@ class _LoginViewState extends State<LoginView> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            CustomImage(image:'assets/LOGIN.jpg'),
+            CustomImage(image: 'assets/LOGIN.jpg'),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Form(
@@ -87,7 +88,6 @@ class _LoginViewState extends State<LoginView> {
                                 builder: (context) => (ResetPassword()),
                               ),
                             );
-                       
                           },
                           child: Text(
                             'Forgot Password ?',
@@ -97,40 +97,43 @@ class _LoginViewState extends State<LoginView> {
                       ],
                     ),
                     SizedBox(height: 20),
-                    CustomButton(
-                      nameButtom: 'Login',
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          try {
-                         await   signInToAccount(
-                              email: emailController.text,
-                              password: passwordController.text,
-                            );
-                          //  snackBar(context, 'Login successful');
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => HomeView(),
-                            //   ),
-                            // );
-                          } on FirebaseAuthException catch (e) {
-                            if (e.code == 'user-not-found') {
-                              snackBar(
-                                context,
-                                'No user found for that email.',
-                              );
-                            } else if (e.code == 'wrong-password') {
-                              snackBar(
-                                context,
-                                'Wrong password provided for that user.',
-                              );
-                            } else {
-                              snackBar(context, 'Wrong email or password');
-                            }
-                          }
-                        }
-                      },
-                    ),
+                    isloading
+                        ? const CircularProgressIndicator()
+                        : CustomButton(
+                            nameButtom: 'Login',
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                setState(() => isloading = true);
+
+                                try {
+                                  await signInToAccount(
+                                    email: emailController.text.trim(),
+                                    password: passwordController.text.trim(),
+                                  );
+                                } on FirebaseAuthException catch (e) {
+                                  if (e.code == 'user-not-found') {
+                                    snackBar(
+                                      context,
+                                      'No user found for that email.',
+                                    );
+                                  } else if (e.code == 'wrong-password') {
+                                    snackBar(
+                                      context,
+                                      'Wrong password provided for that user.',
+                                    );
+                                  } else {
+                                    snackBar(
+                                      context,
+                                      'Wrong email or password',
+                                    );
+                                  }
+                                } finally {
+                                  setState(() => isloading = false);
+                                }
+                              }
+                            },
+                          ),
+
                     SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,

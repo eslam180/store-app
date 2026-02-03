@@ -17,8 +17,9 @@ class RegisterView extends StatefulWidget {
 class _RegisterViewState extends State<RegisterView> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
+  bool isloading = false;
   bool ishidden = true;
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class _RegisterViewState extends State<RegisterView> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            CustomImage(image:'assets/REGISTER.jpg'),
+            CustomImage(image: 'assets/REGISTER.jpg'),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Form(
@@ -49,6 +50,7 @@ class _RegisterViewState extends State<RegisterView> {
                     ),
                     SizedBox(height: 10),
                     CustomTextField(
+                      controller: nameController,
                       hintText: 'Name',
                       prefixIcon: Icon(Icons.person, color: kprimaryColor),
                     ),
@@ -78,35 +80,54 @@ class _RegisterViewState extends State<RegisterView> {
                     ),
 
                     SizedBox(height: 20),
-                    CustomButton(
-                      nameButtom: 'Register',
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          try {
-                            await createAcount(
-                              email: emailController.text,
-                              password: passwordController.text,
-                            );
-                            snackBar(context, 'Account created successfully');
+                    isloading
+                        ? const CircularProgressIndicator()
+                        : CustomButton(
+                            nameButtom: 'Register',
+                            onPressed: () async {
+                              setState(() {
+                                isloading = true;
+                              });
+                              if (_formKey.currentState!.validate()) {
+                                try {
+                                  await createAccount(
+                                    email: emailController.text.trim(),
+                                    password: passwordController.text.trim(),
+                                    name: nameController.text,
+                                  );
 
-                            Navigator.pop(context);
-                          } on FirebaseAuthException catch (e) {
-                            if (e.code == 'weak-password') {
-                              snackBar(context, 'The password is weak');
-                            } else if (e.code == 'email-already-in-use') {
-                              snackBar(context, 'The email is already in use');
-                            } else if (e.code == 'invalid-email') {
-                              snackBar(context, 'The email is invalid');
-                            }
-                          } catch (e) {
-                            snackBar(
-                              context,
-                              'An error occurred while creating the account',
-                            );
-                          }
-                        }
-                      },
-                    ),
+                                  snackBar(
+                                    context,
+                                    'Account created successfully',
+                                  );
+                                  
+
+                                    Navigator.pop(context);
+                                } on FirebaseAuthException catch (e) {
+                                  if (e.code == 'weak-password') {
+                                    snackBar(context, 'The password is weak');
+                                  } else if (e.code == 'email-already-in-use') {
+                                    snackBar(
+                                      context,
+                                      'The email is already in use',
+                                    );
+                                  } else if (e.code == 'invalid-email') {
+                                    snackBar(context, 'The email is invalid');
+                                  }
+                                } catch (e) {
+                                  print(e);
+                                  snackBar(
+                                    context,
+                                    'An error occurred while creating the account',
+                                  );
+                                }
+                                finally {
+                                  setState(() => isloading = false);
+                                }
+                              }
+                             
+                            },
+                          ),
                     SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
