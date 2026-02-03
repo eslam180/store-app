@@ -6,9 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CustomShopCart extends StatelessWidget {
-  const CustomShopCart({super.key, 
-
-  });
+  const CustomShopCart({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +26,7 @@ class CustomShopCart extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => CheckoutView(
-                           price :state.price,
+                            price: state.price,
                             selectedProductss: state.selectedProducts,
                           ),
                         ),

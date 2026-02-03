@@ -29,7 +29,7 @@ class ResetPassword extends StatelessWidget {
             SizedBox(height: 5),
             Text(
               '● We will send you a link to reset your password.',
-              style: TextStyle(fontSize: 16,color: kprimaryColor),
+              style: TextStyle(fontSize: 16, color: kprimaryColor),
             ),
             SizedBox(height: 30),
             CustomButton(

@@ -33,11 +33,11 @@ class CustomTextField extends StatelessWidget {
           return null;
         }
       },
-     
+
       obscureText: obscureText,
       decoration: InputDecoration(
         suffixIcon: suffixIcon,
-prefixIcon:prefixIcon,
+        prefixIcon: prefixIcon,
         errorStyle: TextStyle(height: 0.7, color: Colors.redAccent),
         hintText: hintText,
         hintStyle: TextStyle(color: kprimaryColor, fontSize: 14),

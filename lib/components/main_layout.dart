@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flower_app/costants.dart';
 import 'package:flower_app/views/home_view.dart';
 import 'package:flower_app/views/profile_page.dart';
@@ -14,10 +13,7 @@ class MainLayout extends StatefulWidget {
 class _MainLayoutState extends State<MainLayout> {
   int currentIndex = 0;
 
-  final List<Widget> pages = [
-    HomeView(),   // الهوم الحقيقي
-    ProfilePage(),   // البروفايل
-  ];
+  final List<Widget> pages = [HomeView(), ProfilePage()];
 
   @override
   Widget build(BuildContext context) {
@@ -28,22 +24,17 @@ class _MainLayoutState extends State<MainLayout> {
         currentIndex: currentIndex,
         selectedItemColor: kprimaryColor,
         onTap: (index) async {
-          
-          //  await FirebaseAuth.instance.signOut();
-         
-            setState(() => currentIndex = index);
-        
+          setState(() => currentIndex = index);
         },
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home,color: kprimaryColor),
+            icon: Icon(Icons.home, color: kprimaryColor),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person,color: kprimaryColor,),
+            icon: Icon(Icons.person, color: kprimaryColor),
             label: 'Profile',
           ),
-        
         ],
       ),
     );

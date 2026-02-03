@@ -5,7 +5,6 @@ import 'package:flower_app/views/details_card_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 class Cart extends StatelessWidget {
   const Cart({super.key, required this.productModel});
   final ProductModel productModel;
@@ -70,7 +69,7 @@ class Cart extends StatelessWidget {
               },
             ),
           ),
-        
+
           Positioned(
             top: 10,
             right: 10,

@@ -10,28 +10,23 @@ class AddToCardCubit extends Cubit<AddToCardState> {
   List<ProductModel> selectedProducts = [];
   double price = 0;
 
-  
-Stream<DocumentSnapshot> get userStream {
-  final user = FirebaseAuth.instance.currentUser;
-  if (user == null) {
-    throw Exception('User not logged in');
+  Stream<DocumentSnapshot> get userStream {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      throw Exception('User not logged in');
+    }
+
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .snapshots();
   }
-
-  return FirebaseFirestore.instance
-      .collection('users')
-      .doc(user.uid)
-      .snapshots();
-}
-
 
   void add(ProductModel productModel) {
     selectedProducts.add(productModel);
     price += productModel.price;
 
-    emit(AddToCardState(
-      selectedProducts: selectedProducts,
-      price: price,
-    ));
+    emit(AddToCardState(selectedProducts: selectedProducts, price: price));
   }
 
   void delete(ProductModel productModel) {
@@ -41,9 +36,6 @@ Stream<DocumentSnapshot> get userStream {
       price -= productModel.price;
     }
 
-    emit(AddToCardState(
-      selectedProducts: selectedProducts,
-      price: price,
-    ));
+    emit(AddToCardState(selectedProducts: selectedProducts, price: price));
   }
 }

@@ -100,9 +100,8 @@ class _RegisterViewState extends State<RegisterView> {
                                     context,
                                     'Account created successfully',
                                   );
-                                  
 
-                                    Navigator.pop(context);
+                                  Navigator.pop(context);
                                 } on FirebaseAuthException catch (e) {
                                   if (e.code == 'weak-password') {
                                     snackBar(context, 'The password is weak');
@@ -120,12 +119,10 @@ class _RegisterViewState extends State<RegisterView> {
                                     context,
                                     'An error occurred while creating the account',
                                   );
-                                }
-                                finally {
+                                } finally {
                                   setState(() => isloading = false);
                                 }
                               }
-                             
                             },
                           ),
                     SizedBox(height: 10),

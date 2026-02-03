@@ -21,7 +21,6 @@ class CheckoutView extends StatefulWidget {
 }
 
 class _CheckoutViewState extends State<CheckoutView> {
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AddToCardCubit, AddToCardState>(
@@ -92,7 +91,6 @@ class _CheckoutViewState extends State<CheckoutView> {
                           border: BoxBorder.all(color: kprimaryColor),
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
-                      
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -20,42 +20,28 @@ void showDeleteDialog(BuildContext context) {
             Navigator.pop(context);
             await deleteAccount(context);
           },
-          child: const Text(
-            'Delete',
-            style: TextStyle(color: Colors.red),
-          ),
+          child: const Text('Delete', style: TextStyle(color: Colors.red)),
         ),
       ],
     ),
   );
 }
+
 Future<void> deleteAccount(BuildContext context) async {
   final user = FirebaseAuth.instance.currentUser;
   if (user == null) return;
 
   try {
-    // 🔴 1) ارجعه للـ Login / أول Route
     Navigator.of(context).popUntil((route) => route.isFirst);
 
-    // 🔴 2) احذف بياناته من Firestore
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .delete();
+    await FirebaseFirestore.instance.collection('users').doc(user.uid).delete();
 
-    // 🔴 3) احذف الحساب نفسه
     await user.delete();
-
   } on FirebaseAuthException catch (e) {
     if (e.code == 'requires-recent-login') {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Please re-login to delete your account',
-          ),
-        ),
+        const SnackBar(content: Text('Please re-login to delete your account')),
       );
     }
   }
 }
-
